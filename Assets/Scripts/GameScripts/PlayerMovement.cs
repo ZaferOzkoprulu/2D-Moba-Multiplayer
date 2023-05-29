@@ -4,32 +4,48 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    
+
     [SerializeField] Rigidbody2D controller;
-    [SerializeField] Joystick joystick; 
+    [SerializeField] Joystick joystick;
     [SerializeField] float horizontalMove = 0f;
-    [SerializeField] float verticalMove = 0f;  
+    [SerializeField] float verticalMove = 0f;
     [SerializeField] float runSpeed = 40f;
     [SerializeField] internal bool canMove = true;
-    [SerializeField] internal bool canShoot = false; 
+    [SerializeField] internal bool canShoot = false;
+    Animator animator;
 
     void Start()
     {
         joystick = GameObject.FindGameObjectWithTag("FixedJoystickTag").GetComponent<FixedJoystick>();
         controller = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         // GameUIManager.instance.kickButton.onClick.AddListener(() => Shoot());
     }
     void Update()
     {
+        animator.SetInteger("moveType", 1);
         if (!canMove) return;
         if (joystick.Horizontal >= .2f)
+        {
             horizontalMove = runSpeed;
+            animator.SetInteger("moveType", 2);
+            animator.SetInteger("direction", 4);
+        }
+
         else if (joystick.Horizontal <= -.2f)
+        {
             horizontalMove = -runSpeed;
+            animator.SetInteger("moveType", 2);
+            animator.SetInteger("direction", 1);
+        }
         if (joystick.Vertical >= .2f)
+        {
             verticalMove = runSpeed;
+        }
         else if (joystick.Vertical <= -.2f)
+        {
             verticalMove = -runSpeed;
+        }
         else
         {
             horizontalMove = 0;
@@ -49,8 +65,8 @@ public class PlayerMovement : MonoBehaviour
         if (canShoot)
         {
             Vector2 dir = (SpawnManager.instance.SkillShotBall.transform.position - gameObject.transform.position).normalized;
-            SpawnManager.instance.SkillShotBall.GetComponent<Rigidbody2D>().AddForce(dir * 500 );
+            SpawnManager.instance.SkillShotBall.GetComponent<Rigidbody2D>().AddForce(dir * 500);
         }
     }
-    
+
 }
