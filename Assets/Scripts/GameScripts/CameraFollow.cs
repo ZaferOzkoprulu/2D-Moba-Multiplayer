@@ -9,6 +9,7 @@ public class CameraFollow : MonoBehaviourPun
     [SerializeField] float camDistance;
     void Start()
     {
+        this.gameObject.GetComponent<Camera>().orthographicSize = 7f;
         foreach (var item in SpawnManager.instance.playerPrefabList)
         {
             if (item.transform.GetChild(0).GetComponent<PhotonView>().IsMine)
@@ -23,7 +24,7 @@ public class CameraFollow : MonoBehaviourPun
         {
             if (item.transform.GetChild(0).GetComponent<PhotonView>().IsMine)
             {
-                transform.position = new Vector3(item.transform.GetChild(0).position.x, item.transform.GetChild(0).position.y, -10);
+                transform.position = new Vector3(item.transform.GetChild(0).position.x, item.transform.GetChild(0).position.y, -200);
                 Debug.Log("isMine Player pos = " + item.transform.GetChild(0).GetComponent<Transform>().position);
             }
         }
